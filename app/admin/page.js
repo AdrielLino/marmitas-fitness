@@ -181,6 +181,7 @@ function Painel() {
               <input type="number" step="0.01" min="0" defaultValue={p.preco}
                 onBlur={(e) => salvarProd(p.id, { preco: Number(e.target.value) })} />
             </div>
+            <FotoProduto p={p} onChange={(url) => salvarProd(p.id, { foto_url: url })} aviso={aviso} />
             <div className="acoes">
               <label className="chk"><input type="checkbox" checked={p.na_semana}
                 onChange={(e) => salvarProd(p.id, { na_semana: e.target.checked })} />Na semana</label>
