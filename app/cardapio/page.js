@@ -21,6 +21,7 @@ export default function Cardapio() {
 
   const mudar = (id, d) => setQtd((q) => ({ ...q, [id]: Math.max(0, (q[id] || 0) + d) }));
   const itens = prods.filter((p) => qtd[p.id] > 0);
+  const excecoes = prods.filter((p) => p.sem_desconto).map((p) => p.nome);
   const total = calcTotal(itens.flatMap((p) => Array(qtd[p.id]).fill({ preco: p.preco, fixo: p.sem_desconto })), cfg);
   const totalQtd = itens.reduce((s, p) => s + qtd[p.id], 0);
 
@@ -40,7 +41,12 @@ export default function Cardapio() {
         <h1>Marmitas Fit Congeladas</h1>
         <p><a href="/" style={{ color: "#fff" }}>← Início</a> · Cardápio da semana</p>
       </header>
-      {cfg.combo_qtd > 0 && <div className="aviso">A partir de {cfg.combo_qtd} marmitas, cada uma sai por {brl(cfg.combo_preco)}!</div>}
+      {cfg.combo_qtd > 0 && (
+        <div className="aviso">
+          A partir de {cfg.combo_qtd} marmitas, cada uma sai por {brl(cfg.combo_preco)}!
+          {excecoes.length > 0 && ` (exceto: ${excecoes.join(", ")})`}
+        </div>
+      )}
       {!aberto && <div className="aviso">Pedidos fechados no momento. {cfg.aviso}</div>}
       {aberto && cfg.aviso && <div className="aviso">{cfg.aviso}</div>}
 
