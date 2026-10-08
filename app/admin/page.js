@@ -40,6 +40,55 @@ function Login() {
   );
 }
 
+function redimensionar(file, max = 900) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      const k = Math.min(1, max / Math.max(img.width, img.height));
+      const c = document.createElement("canvas");
+      c.width = Math.round(img.width * k);
+      c.height = Math.round(img.height * k);
+      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+      c.toBlob((b) => (b ? resolve(b) : reject(new Error("falhou"))), "image/jpeg", 0.8);
+    };
+    img.onerror = reject;
+    img.src = URL.createObjectURL(file);
+  });
+}
+
+function FotoProduto({ p, onChange, aviso }) {
+  const [enviando, setEnviando] = useState(false);
+
+  async function escolher(e) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setEnviando(true);
+    try {
+      const blob = await redimensionar(file);
+      const nome = `${p.id}-${Date.now()}.jpg`;
+      const { error } = await supabase.storage.from("fotos").upload(nome, blob, { contentType: "image/jpeg" });
+      if (error) throw error;
+      const { data } = supabase.storage.from("fotos").getPublicUrl(nome);
+      await onChange(data.publicUrl);
+    } catch (err) {
+      aviso("Erro ao enviar a foto.");
+    }
+    setEnviando(false);
+    e.target.value = "";
+  }
+
+  return (
+    <div className="f">Foto
+      {p.foto_url && <img src={p.foto_url} alt="" className="foto-prev" />}
+      <label className="btn s g" style={{ cursor: "pointer" }}>
+        {enviando ? "Enviando..." : p.foto_url ? "Trocar foto" : "Escolher foto"}
+        <input type="file" accept="image/*" onChange={escolher} hidden />
+      </label>
+      {p.foto_url && <button className="btn s r" onClick={() => onChange(null)}>Remover foto</button>}
+    </div>
+  );
+}
+
 function Painel() {
   const [cfg, setCfg] = useState(null);
   const [prods, setProds] = useState([]);
