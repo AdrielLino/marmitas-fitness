@@ -54,6 +54,7 @@ export default function Cardapio() {
 
       {prods.map((p) => (
         <div key={p.id} className={"card" + (p.esgotado ? " off" : "")}>
+        {p.foto_url && <img src={p.foto_url} alt={p.nome} className="thumb" />}
           <div>
             <b>{p.nome}</b>
             <span>{p.descricao}{p.sem_desconto ? " (preço fixo, fora do desconto)" : ""}</span>
