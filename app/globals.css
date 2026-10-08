@@ -38,3 +38,7 @@ textarea,input{width:100%;font:inherit;padding:9px 10px;border:1px solid var(--l
 .hero .btn{max-width:320px;margin-top:28px;text-align:center;text-decoration:none}
 .login-link{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:16px;font-size:13px;color:var(--mute);opacity:.6;text-decoration:none}
 .btn{text-align:center}
+.thumb{width:92px;height:92px;object-fit:cover;border-radius:12px;flex:none}
+.card>div{flex:1;min-width:0}
+.card>.preco{flex:none}
+.foto-prev{width:100%;max-height:200px;object-fit:cover;border-radius:12px}
