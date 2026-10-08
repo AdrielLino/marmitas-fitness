@@ -21,7 +21,7 @@ export default function Cardapio() {
 
   const mudar = (id, d) => setQtd((q) => ({ ...q, [id]: Math.max(0, (q[id] || 0) + d) }));
   const itens = prods.filter((p) => qtd[p.id] > 0);
-  const total = calcTotal(itens.flatMap((p) => Array(qtd[p.id]).fill(p.preco)), cfg);
+  const total = calcTotal(itens.flatMap((p) => Array(qtd[p.id]).fill({ preco: p.preco, fixo: p.sem_desconto });
   const totalQtd = itens.reduce((s, p) => s + qtd[p.id], 0);
 
   function pedir() {
@@ -50,7 +50,7 @@ export default function Cardapio() {
         <div key={p.id} className={"card" + (p.esgotado ? " off" : "")}>
           <div>
             <b>{p.nome}</b>
-            <span>{p.descricao}</span>
+            <span>{p.descricao}{p.sem_desconto ? " (preço fixo, fora do desconto)" : ""}</span>
             {p.esgotado ? (
               <div className="qty">Esgotada</div>
             ) : (
