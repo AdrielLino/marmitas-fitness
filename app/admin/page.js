@@ -137,6 +137,8 @@ function Painel() {
                 onChange={(e) => salvarProd(p.id, { na_semana: e.target.checked })} />Na semana</label>
               <label className="chk"><input type="checkbox" checked={p.esgotado}
                 onChange={(e) => salvarProd(p.id, { esgotado: e.target.checked })} />Esgotada</label>
+              <label className="chk"><input type="checkbox" checked={!!p.sem_desconto}
+                onChange={(e) => salvarProd(p.id, { sem_desconto: e.target.checked })} />Fora do desconto</label>
               <button className="btn s r" onClick={() => apagar(p.id)}>Apagar</button>
             </div>
           </div>
